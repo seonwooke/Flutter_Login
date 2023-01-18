@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_login/firebase_options.dart';
+import 'package:flutter_login/pages/login_page.dart';
+import 'package:get/get.dart';
+
+import 'bindings/binding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,14 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Center(
-        child: Text('Firebase Connection'),
-      ),
+      initialBinding: HomeBinding(),
+      home: LoginPage(),
+      defaultTransition: Transition.native,
     );
   }
 }
