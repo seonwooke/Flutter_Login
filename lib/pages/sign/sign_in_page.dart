@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/controllers/auth_controller.dart';
-import 'package:flutter_login/pages/sign_up_page.dart';
+import 'package:flutter_login/pages/sign/sign_up_page.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
+class SignInPage extends StatelessWidget {
+  SignInPage({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();

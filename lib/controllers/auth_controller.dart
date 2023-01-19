@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/pages/login_page.dart';
 import 'package:get/get.dart';
 
-import '../pages/home_page.dart';
+import '../pages/home/home_page.dart';
+import '../pages/sign/sign_in_page.dart';
+
 
 class AuthController extends GetxController {
   /// AuthController.instance.something과 같이 사용 가능
@@ -33,7 +34,7 @@ class AuthController extends GetxController {
   /// User의 상태에 따른 페이지 이동
   moveToPage(User? user) {
     if (user == null) {
-      Get.offAll(() => LoginPage());
+      Get.offAll(() => SignInPage());
     } else {
       Get.offAll(() => HomePage());
     }
