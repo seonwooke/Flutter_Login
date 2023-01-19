@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/services/auth/auth.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/controllers.dart';
@@ -137,9 +138,10 @@ class SignUpPage extends StatelessWidget {
                 onTap: () {
                   if (_passwordController.text ==
                       _passwordConfirmController.text) {
-                    AuthController.instance.addAuthToFirebase(
+                    Authentication.instance.signUpWithEmailAndPassword(
                       _emailController.text.trim(),
                       _passwordController.text.trim(),
+                      _emailController.text.trim(),
                     );
                   } else {
                     Get.snackbar(

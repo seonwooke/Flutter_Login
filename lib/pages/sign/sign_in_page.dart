@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/controllers/auth_controller.dart';
 import 'package:flutter_login/pages/sign/sign_up_page.dart';
+import 'package:flutter_login/services/auth/auth.dart';
 import 'package:get/get.dart';
+
+import '../../controllers/controllers.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -104,7 +106,7 @@ class SignInPage extends StatelessWidget {
                 /// Sign in Button
                 GestureDetector(
                   onTap: () {
-                    AuthController.instance.signInAuth(
+                    Authentication.instance.signInWithEmailAndPassword(
                       _emailController.text.trim(),
                       _passwordController.text.trim(),
                     );

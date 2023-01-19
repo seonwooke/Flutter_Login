@@ -9,14 +9,19 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = FirebaseAuth.instance.currentUser ;
-    if (currentUser != null) {
-      Get.offNamed(AppRoutes.instance.HOME) ;
-    } else {
-      Get.offNamed(AppRoutes.instance.SIGNIN) ;
-    }
-    return const Center(
-      child: CircularProgressIndicator(),
+    Future.delayed(const Duration(milliseconds: 100), () {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        Get.offNamed(AppRoutes.instance.HOME);
+      } else {
+        Get.offNamed(AppRoutes.instance.SIGNIN);
+      }
+    });
+    return Container(
+      color: Colors.white,
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
