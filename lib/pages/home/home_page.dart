@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/controllers/auth_controller.dart';
+import 'package:flutter_login/services/auth/auth.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
           icon: const Icon(
             Icons.exit_to_app,
           ),
-          onPressed: () => AuthController.instance.authentication.signOut(),
+          onPressed: () => Authentication.instance.signOut(),
         )
       ],
     );

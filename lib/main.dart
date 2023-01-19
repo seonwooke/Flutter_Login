@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: HomeBinding(),
-      initialRoute: AppRoutes.LOGIN,
-      getPages: AppPages.routes,
+      initialBinding: InitBinding(),
+      initialRoute: AppRoutes.instance.START,
+      getPages: AppPages.instance.pages,
       defaultTransition: Transition.native,
     );
   }
