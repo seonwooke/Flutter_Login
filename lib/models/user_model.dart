@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
-import '../constants/enums/enums.dart';
+import '../constants/constants.dart';
 
 class UserModel {
   LoginType loginType;
@@ -51,5 +49,13 @@ class UserModel {
 
   factory UserModel.emailSignUp(User user, String displayName) {
     return UserModel.signUp(LoginType.email, user, displayName);
+  }
+
+  factory UserModel.socialSignUp(LoginType loginType, User user) {
+    return UserModel.signUp(
+      loginType,
+      user,
+      DataUtils.instance.randomNicknameGenerator(),
+    );
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_login/firebase_options.dart';
 import 'package:get/get.dart';
 
 import 'bindings/binding.dart';
-import 'constants/routes/routes.dart';
+import 'constants/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,4 +27,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//

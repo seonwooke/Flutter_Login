@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../constants/constants.dart';
 import '../models/models.dart';
 
 class UserRepository {
@@ -23,5 +24,9 @@ class UserRepository {
         print(e);
       }
     }
+  }
+
+  Future<void> updateLoginType(LoginType type, String uid) async {
+    _userCollection.doc(uid).update({'loginType': type.name});
   }
 }

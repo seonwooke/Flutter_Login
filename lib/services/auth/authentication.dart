@@ -1,7 +1,9 @@
+import 'package:flutter_login/constants/enums/enums.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../constants/routes/routes.dart';
 import '../../models/models.dart';
@@ -14,12 +16,7 @@ class Authentication {
 
   static Authentication get instance => _instance;
 
-  Future<void> signOut() async {
-    await FirebaseAuth.instance
-        .signOut()
-        .then((value) => Get.offAllNamed(AppRoutes.instance.SIGNIN));
-  }
-
+  /// 이메일 회원가입
   Future<User?> signUpWithEmailAndPassword(
       String email, String password, String displayName) async {
     try {
@@ -58,6 +55,7 @@ class Authentication {
     return null;
   }
 
+  /// 이메일 로그인
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await FirebaseAuth.instance
@@ -76,6 +74,119 @@ class Authentication {
       }
     } on FirebaseAuthException catch (e) {
       errorSnackBar(e);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  /// 이메일 로그아웃
+  Future<void> signOut() async {
+    await FirebaseAuth.instance
+        .signOut()
+        .then((value) => Get.offAllNamed(AppRoutes.instance.SIGNIN));
+  }
+
+  /// 구글 로그인
+  Future<User?> signInWithGoogle() async {
+    User? user;
+
+    if (kIsWeb) {
+      /// 웹인지 확인
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+      try {
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithPopup(authProvider);
+
+        user = userCredential.user;
+
+        if (user != null && userCredential.additionalUserInfo!.isNewUser) {
+          await UserRepository.instance.addUserToFirebase(
+            UserModel.socialSignUp(
+              LoginType.google,
+              user,
+            ),
+          );
+        } else if (user != null) {
+          await UserRepository.instance.updateLoginType(
+            LoginType.google,
+            user.uid,
+          );
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          /// 디버그 모드인지 확인
+          print(e);
+        }
+      }
+    } else {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+
+      try {
+        if (googleSignInAccount != null) {
+          final GoogleSignInAuthentication googleSignInAuthentication =
+              await googleSignInAccount.authentication;
+
+          final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken,
+          );
+
+          try {
+            final UserCredential userCredential =
+                await FirebaseAuth.instance.signInWithCredential(credential);
+
+            user = userCredential.user;
+
+            if (user != null && userCredential.additionalUserInfo!.isNewUser) {
+              await UserRepository.instance.addUserToFirebase(
+                UserModel.socialSignUp(
+                  LoginType.google,
+                  user,
+                ),
+              );
+            } else if (user != null) {
+              await UserRepository.instance
+                  .updateLoginType(LoginType.google, user.uid);
+            }
+          } on FirebaseAuthException catch (e) {
+            if (kDebugMode) {
+              print(e.code);
+            }
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
+        }
+        return user;
+      } on PlatformException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    }
+    return null;
+  }
+
+  /// 구글 로그아웃
+  Future<void> signOutWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      if (!kIsWeb) {
+        await googleSignIn.signOut();
+      }
+      await signOut();
     } catch (e) {
       if (kDebugMode) {
         print(e);
