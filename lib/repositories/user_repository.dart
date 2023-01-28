@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../constants/constants.dart';
+import '../controllers/controllers.dart';
 import '../models/models.dart';
 
 class UserRepository {
@@ -12,6 +13,21 @@ class UserRepository {
   static UserRepository get instance => _instance;
 
   final _userCollection = FirebaseFirestore.instance.collection("user");
+
+  Future<UserModel> getUser(String uid) async {
+    UserModel userModel = UserModel.empty();
+    try {
+      await _userCollection.doc(uid).get().then((DocumentSnapshot ds) {
+        userModel = UserModel.fromMap(ds.data() as Map<String, dynamic>);
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+        print(userModel.toString());
+      }
+    }
+    return userModel;
+  }
 
   Future<void> addUserToFirebase(UserModel userModel) async {
     try {
@@ -28,5 +44,11 @@ class UserRepository {
 
   Future<void> updateLoginType(LoginType type, String uid) async {
     _userCollection.doc(uid).update({'loginType': type.name});
+  }
+
+  Future<void> updateMyUserInfo() async {
+    await _userCollection
+        .doc(UserController.instance.currentUserUid)
+        .set(UserController.instance.currentUserModel.value.toMap());
   }
 }

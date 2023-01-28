@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_login/firebase_options.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'bindings/binding.dart';
@@ -19,11 +20,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      initialBinding: InitBinding(),
-      initialRoute: AppRoutes.instance.START,
-      getPages: AppPages.instance.pages,
-      defaultTransition: Transition.native,
+    return ScreenUtilInit(
+      minTextAdapt: true,
+      designSize: const Size(375, 812),
+      builder: ((context, child) => GetMaterialApp(
+            initialBinding: InitBinding(),
+            initialRoute: AppRoutes.instance.START,
+            getPages: AppPages.instance.pages,
+            defaultTransition: Transition.native,
+          )),
     );
   }
 }

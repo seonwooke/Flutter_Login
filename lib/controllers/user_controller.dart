@@ -1,14 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../pages/home/home_page.dart';
-import '../pages/sign/sign_in_page.dart';
+import '../models/models.dart';
+import '../repositories/repositories.dart';
+import '../services/auth/auth.dart';
 
 class UserController extends GetxController {
   /// AuthController.instance.something과 같이 사용 가능
   static UserController get instance => Get.find();
 
+  final currentUserModel = UserModel.empty().obs;
+  final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+
+  Future<void> init() async {
+    UserModel userModel = await UserRepository.instance.getUser(currentUserUid);
+    if (userModel.uid.isEmpty) {
+      await Authentication.instance.signOut();
+    } else {
+      currentUserModel.value = userModel;
+    }
+  }
+
+  @override
+  Future<void> onInit() async {
+    await init();
+    super.onInit();
+  }
+/*
   // /// User의 정보가 들어가는 변수
   // late Rx<User?> user;
 
@@ -70,4 +88,5 @@ class UserController extends GetxController {
   //     );
   //   }
   // }
+*/
 }

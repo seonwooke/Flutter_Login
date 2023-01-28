@@ -1,5 +1,5 @@
+import 'package:flutter_login/bindings/binding.dart';
 import 'package:get/route_manager.dart';
-
 
 import '../../pages/pages.dart';
 import 'routes.dart';
@@ -12,9 +12,22 @@ class AppPages {
   static AppPages get instance => _instance;
 
   var pages = [
-    GetPage(name: AppRoutes.instance.START, page: () => StartPage()),
-    GetPage(name: AppRoutes.instance.SIGNIN, page: () => SignInPage()),
-    GetPage(name: AppRoutes.instance.SIGNUP, page: () => SignUpPage()),
-    GetPage(name: AppRoutes.instance.HOME, page: () => const HomePage()),
+    GetPage(
+      name: AppRoutes.instance.START,
+      page: () => StartPage(),
+    ),
+    GetPage(
+      name: AppRoutes.instance.SIGNIN,
+      page: () => SignInPage(),
+    ),
+    GetPage(
+      name: AppRoutes.instance.SIGNUP,
+      page: () => SignUpPage(),
+    ),
+    GetPage(
+      name: AppRoutes.instance.HOME,
+      page: () => const HomePage(),
+      binding: HomeBinding(),
+    ),
   ];
 }

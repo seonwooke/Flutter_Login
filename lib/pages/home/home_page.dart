@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/controllers/user_controller.dart';
 import 'package:flutter_login/services/auth/auth.dart';
+
+import '../../repositories/repositories.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,7 +24,16 @@ class HomePage extends StatelessWidget {
           icon: const Icon(
             Icons.exit_to_app,
           ),
-          onPressed: () async => await Authentication.instance.signOut(),
+          onPressed: () async {
+            try {
+              await UserRepository.instance.updateMyUserInfo();
+              await Authentication.instance.signOut();
+            } catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
+            }
+          },
         )
       ],
     );

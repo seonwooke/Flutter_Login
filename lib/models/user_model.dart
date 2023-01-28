@@ -27,6 +27,16 @@ class UserModel {
     };
   }
 
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      loginType: LoginType.values.byName(map['loginType'] as String),
+      uid: map['uid'] as String,
+      displayName: map['displayName'] as String,
+      email: map['email'] as String,
+      photoUrl: map['photoUrl'] as String,
+    );
+  }
+
   factory UserModel.empty() {
     return UserModel(
       loginType: LoginType.email,
