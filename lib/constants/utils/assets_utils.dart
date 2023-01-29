@@ -6,4 +6,5 @@ class AssetsUtils {
   static AssetsUtils get instance => _instance;
 
   final google = 'assets/images/google.png';
+  final kakao = 'assets/images/kakao.png';
 }

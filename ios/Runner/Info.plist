@@ -29,6 +29,8 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+        		<!-- kakao login -->
+        		<string>kakaoe41b26ff080aa9989d44df90cd7255b1</string>
 				<string>com.googleusercontent.apps.36186893624-mooi441gl4ppocodr2890fu4gpmb4bof</string>
 			</array>
 		</dict>

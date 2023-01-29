@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 
 import '../constants/constants.dart';
 
@@ -57,6 +58,16 @@ class UserModel {
     );
   }
 
+  factory UserModel.kSignUp(LoginType loginType, kakao.User user) {
+    return UserModel(
+      loginType: loginType,
+      uid: user.id.toString(),
+      email: user.kakaoAccount!.email!,
+      displayName: user.kakaoAccount!.profile!.nickname!,
+      photoUrl: '',
+    );
+  }
+
   factory UserModel.emailSignUp(User user, String displayName) {
     return UserModel.signUp(LoginType.email, user, displayName);
   }
@@ -66,6 +77,13 @@ class UserModel {
       loginType,
       user,
       DataUtils.instance.randomNicknameGenerator(),
+    );
+  }
+
+  factory UserModel.kakaoSignUp(LoginType loginType, kakao.User user) {
+    return UserModel.kSignUp(
+      loginType,
+      user,
     );
   }
 }

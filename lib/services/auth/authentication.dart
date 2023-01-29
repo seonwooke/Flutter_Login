@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_login/constants/enums/enums.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
+import 'package:http/http.dart' as http;
 
 import '../../constants/routes/routes.dart';
 import '../../models/models.dart';
@@ -189,6 +194,76 @@ class Authentication {
       await signOut();
     } catch (e) {
       if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  /// 카카오 로그인
+  Future<kakao.User?> signInWithKakao() async {
+    kakao.User? user;
+
+    try {
+      // 카카오톡 설치 여부 확인
+      bool isInstalled = await kakao.isKakaoTalkInstalled();
+      if (isInstalled) {
+        try {
+          // 카카오톡이 설치되어 있으면 카카오톡을 실행하여 로그인
+          await kakao.UserApi.instance.loginWithKakaoTalk();
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+      } else {
+        try {
+          // 카카오톡이 설치되어 있지 않다면 웹으로 로그인
+          await kakao.UserApi.instance.loginWithKakaoAccount();
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+      }
+
+      user = await kakao.UserApi.instance.me();
+      const String url =
+          'https://us-central1-flutter-study-4bbd1.cloudfunctions.net/createCustomToken';
+      final token = await http.post(Uri.parse(url),
+          body: ({
+            'uid': user.id.toString(),
+            'displayName': user.kakaoAccount!.profile!.nickname,
+            'email': user.kakaoAccount!.email!,
+            'photoURL': user.kakaoAccount!.profile!.profileImageUrl!,
+          }));
+      await FirebaseAuth.instance.signInWithCustomToken(token.body);
+
+      if (!user.hasSignedUp!) {
+        await UserRepository.instance.addUserToFirebase(
+          UserModel.kakaoSignUp(
+            LoginType.kakao,
+            user,
+          ),
+        );
+      }
+
+      return user;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
+    return null;
+  }
+
+  /// 카카오 로그아웃
+  Future<void> signOutWithKakao() async {
+    try {
+      await kakao.UserApi.instance.logout();
+    } catch (e) {
+      if (kDebugMode) {
+        /// 디버그 모드인지 확인
         print(e);
       }
     }

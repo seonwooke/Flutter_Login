@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_login/firebase_options.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'bindings/binding.dart';
 import 'constants/constants.dart';
 
 void main() async {
+  KakaoSdk.init(nativeAppKey: 'e41b26ff080aa9989d44df90cd7255b1');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

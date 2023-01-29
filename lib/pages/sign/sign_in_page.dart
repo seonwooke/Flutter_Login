@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/pages/sign/sign_up_page.dart';
 import 'package:flutter_login/services/auth/auth.dart';
+import 'package:flutter_login/services/auth/kakao_login.dart';
 import 'package:get/get.dart';
 
 import '../../constants/utils/utils.dart';
@@ -171,37 +172,72 @@ class SignInPage extends StatelessWidget {
                         ),
 
                         /// Social SNS Login Button
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: InkWell(
-                            onTap: () {
-                              signController.start();
-                              GoogleLogin().signIn();
-                            },
-                            child: Container(
-                              height: 48,
-                              width: 48,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 1,
-                                  color: Colors.grey,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /// Google
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: InkWell(
+                                onTap: () {
+                                  signController.start();
+                                  GoogleLogin().signIn();
+                                },
+                                child: Container(
+                                  height: 48,
+                                  width: 48,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  child: Image.asset(
+                                    AssetsUtils.instance.google,
+                                    height: 24,
+                                    width: 24,
+                                  ),
                                 ),
                               ),
-                              child: Image.asset(
-                                AssetsUtils.instance.google,
-                                height: 24,
-                                width: 24,
+                            ),
+
+                            /// Kakao
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, left: 20.0),
+                              child: InkWell(
+                                onTap: () {
+                                  signController.start();
+                                  KakaoLogin().signIn();
+                                },
+                                child: Container(
+                                  height: 48,
+                                  width: 48,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  child: Image.asset(
+                                    AssetsUtils.instance.kakao,
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     );
