@@ -29,14 +29,27 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-        		<!-- kakao login -->
-        		<string>kakaoe41b26ff080aa9989d44df90cd7255b1</string>
-				<string>com.googleusercontent.apps.36186893624-mooi441gl4ppocodr2890fu4gpmb4bof</string>
+				<string>kakaoe41b26ff080aa9989d44df90cd7255b1</string>
 			</array>
 		</dict>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+  	<array>
+		<!-- common -->
+      	<string>kakao${native_app_key_here}</string>
+
+      	<!-- KakaoTalk login -->
+      	<string>kakaokompassauth</string>
+      	<string>storykompassauth</string>
+
+      	<!-- KakaoLink -->
+      	<string>kakaolink</string>         
+      	<string>kakaotalk-5.9.7</string>
+  </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>KAKAO_APP_KEY</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

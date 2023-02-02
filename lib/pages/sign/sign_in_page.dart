@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/pages/sign/sign_up_page.dart';
-import 'package:flutter_login/services/auth/auth.dart';
-import 'package:flutter_login/services/auth/kakao_login.dart';
+// import 'package:flutter_login/services/auth/auth.dart';
+// import 'package:flutter_login/services/auth/kakao_login.dart';
 import 'package:get/get.dart';
 
 import '../../constants/utils/utils.dart';
 import '../../controllers/controllers.dart';
+import '../../test/test.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   final signController = Get.put(SignController());
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
+  final viewModel = MainViewModel(KakaoLogin());
 
   @override
   Widget build(BuildContext context) {
@@ -115,15 +125,15 @@ class SignInPage extends StatelessWidget {
                         /// Sign in Button
                         GestureDetector(
                           onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              signController.start();
-                              await Authentication.instance
-                                  .signInWithEmailAndPassword(
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
-                              );
-                              signController.done();
-                            }
+                            // if (_formKey.currentState!.validate()) {
+                            //   signController.start();
+                            //   await Authentication.instance
+                            //       .signInWithEmailAndPassword(
+                            //     _emailController.text.trim(),
+                            //     _passwordController.text.trim(),
+                            //   );
+                            //   signController.done();
+                            // }
                           },
                           child: SizedBox(
                             child: Padding(
@@ -181,7 +191,7 @@ class SignInPage extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   signController.start();
-                                  GoogleLogin().signIn();
+                                  // GoogleLogin().signIn();
                                 },
                                 child: Container(
                                   height: 48,
@@ -211,17 +221,15 @@ class SignInPage extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(top: 20.0, left: 20.0),
                               child: InkWell(
-                                onTap: () {
-                                  signController.start();
-                                  KakaoLogin().signIn();
+                                onTap: () async {
+                                  // signController.start();
+                                  // KakaoLogin().signIn();
+                                  await viewModel.login();
+                                  setState(() {});
                                 },
                                 child: Container(
                                   height: 48,
                                   width: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 12,
-                                  ),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -239,6 +247,12 @@ class SignInPage extends StatelessWidget {
                             ),
                           ],
                         ),
+
+                        Center(
+                          child: Text(
+                            '${viewModel.isLogined}',
+                          ),
+                        )
                       ],
                     );
             }),
