@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/pages/sign/sign_up_page.dart';
 // import 'package:flutter_login/services/auth/auth.dart';
 // import 'package:flutter_login/services/auth/kakao_login.dart';
 import 'package:get/get.dart';
@@ -7,24 +6,16 @@ import 'package:get/get.dart';
 import '../../constants/utils/utils.dart';
 import '../../controllers/controllers.dart';
 import '../../test/test.dart';
+import '../pages.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends StatelessWidget {
   SignInPage({Key? key}) : super(key: key);
 
-  @override
-  State<SignInPage> createState() => _SignInPageState();
-}
-
-class _SignInPageState extends State<SignInPage> {
   final signController = Get.put(SignController());
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
-  final viewModel = MainViewModel(KakaoLogin());
 
   @override
   Widget build(BuildContext context) {
@@ -222,10 +213,9 @@ class _SignInPageState extends State<SignInPage> {
                                   const EdgeInsets.only(top: 20.0, left: 20.0),
                               child: InkWell(
                                 onTap: () async {
-                                  // signController.start();
+                                  signController.start();
                                   // KakaoLogin().signIn();
-                                  await viewModel.login();
-                                  setState(() {});
+                                  KakaoLogin().login();
                                 },
                                 child: Container(
                                   height: 48,
@@ -247,12 +237,6 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ],
                         ),
-
-                        Center(
-                          child: Text(
-                            '${viewModel.isLogined}',
-                          ),
-                        )
                       ],
                     );
             }),
