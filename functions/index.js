@@ -11,7 +11,7 @@ admin.initializeApp({
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.createCustomToken = functions.region("asia-northeast3").https.onRequest(async (request, response) => {
+exports.createCustomToken = functions.https.onRequest(async (request, response) => {
     const user = request.body;
   
     const uid = `kakao:${user.uid}`;
